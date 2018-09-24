@@ -47,25 +47,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         int childCount = grid.getChildCount();
-
-//        Log.d("draw_board", Integer.toString(childCount));
-
         for (int i = 0; i < childCount; i++) {
             ImageView field = (ImageView) grid.getChildAt(i);
             field.setOnClickListener(this);
         }
+
+//        Log.d("opponent", player.getOpponent().name());
     }
 
     @Override
     public void onClick(View v) {
         ImageView field = (ImageView) v;
+        int fieldId = field.getId();
 
-        if (game.Move(player, field.getId())) {
+        if (game.Move(player, fieldId)) {
             field.setImageResource(player.imgId);
-            Log.d("field", Integer.toString(field.getId()));
+            Log.d("field", Integer.toString(fieldId));
         }
         else {
             Log.d("field", "This field is already taken");
+        }
+
+        if (game.Won(fieldId)) {
+            Log.d("won", "WINNER: HUMAN PLAYER!");
+        }
+        else {
+
+            // Simple random computer player
+            int opponentMoveId = game.getVacant();
+            if (opponentMoveId >= 0) {
+                game.Move(player.getOpponent(), opponentMoveId);
+                ImageView opponentField = findViewById(opponentMoveId);
+                opponentField.setImageResource(player.getOpponent().imgId);
+            }
+
+            if (opponentMoveId >= 0 && game.Won(opponentMoveId)) {
+                Log.d("won", "WINNER: AI PLAYER!");
+            }
         }
     }
 }

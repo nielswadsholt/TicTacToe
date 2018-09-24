@@ -2,6 +2,7 @@ package ai.brothersinarms.tic_tac_toe;
 
 import android.util.Log;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 public class Game {
@@ -60,14 +61,39 @@ public class Game {
         return false;
     }
 
-//    public boolean Won(int fieldIdx) {
-//        int row = fieldIdx / dim;
-//        int col = fieldIdx % dim;
-//
-//        for (int i = 0; i < dim; i++) {
-//            if (board[row][i])
-//        }
-//
-//        return true;
-//    }
+    public int getVacant() {
+        int size = vacant.size();
+
+        if (size > 0) {
+            int item = new Random().nextInt(size);
+            int i = 0;
+
+            for(Integer idx : vacant)
+            {
+                if (i == item)
+                    return idx;
+                i++;
+            }
+        }
+
+        return -1;
+    }
+
+    public boolean Won(int fieldIdx) {
+        int row = fieldIdx / dim;
+        int col = fieldIdx % dim;
+        boolean rowWin = true;
+        boolean colWin = true;
+        boolean diagonal1Win = true;
+        boolean diagonal2Win = true;
+
+        for (int i = 0; i < dim; i++) {
+            if (board[row][i] != board[row][col]) rowWin = false;
+            if (board[i][col] != board[row][col]) colWin = false;
+            if (board[i][i] != board[row][col]) diagonal1Win = false;
+            if (board[i][dim-1-i] != board[row][col]) diagonal2Win = false;
+        }
+
+        return rowWin || colWin || diagonal1Win || diagonal2Win;
+    }
 }
