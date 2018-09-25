@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/new_game"
+        android:title="@string/new_game"
+        app:showAsAction="ifRoom"/>
+    <item android:id="@+id/board_size"
+        android:title="@string/board_size">
+        <menu>
+            <item android:id="@+id/board_3x3"
+                android:title="@string/board_3x3"/>
+            <item android:id="@+id/board_4x4"
+                android:title="@string/board_4x4"/>
+            <item android:id="@+id/board_5x5"
+                android:title="@string/board_5x5"/>
+        </menu>
+    </item>
+</menu>
