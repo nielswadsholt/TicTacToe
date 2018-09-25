@@ -2,5 +2,10 @@
     <string name="app_name">Tic-Tac-Toe</string>
     <string name="welcome">Welcome to Tic-Tac-Toe!</string>
     <string name="win_human">You win!</string>
-    <string name="win_computer">The computer wins. Bow, human, to the robot overlords!</string>
+    <string name="win_computer">The computer wins!\nBow, human, to the robot overlords!</string>
+    <string name="new_game">New game</string>
+    <string name="board_size">Board size</string>
+    <string name="board_3x3">3 x 3</string>
+    <string name="board_4x4">4 x 4</string>
+    <string name="board_5x5">5 x 5</string>
 </resources>
