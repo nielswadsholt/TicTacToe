@@ -17,10 +17,10 @@ class Game {
             this.id = id;
 
             if (id == 1) {
-                this.imgId = R.drawable.player_o;
+                this.imgId = R.drawable.ttt_o;
             }
             else {
-                this.imgId = R.drawable.player_x;
+                this.imgId = R.drawable.ttt_x;
             }
         }
 
