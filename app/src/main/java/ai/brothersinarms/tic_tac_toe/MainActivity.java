@@ -1,5 +1,7 @@
 package ai.brothersinarms.tic_tac_toe;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +11,7 @@ import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private int dim = 3;
+    private int dim = 4;
     private Game game;
     private Game.Player player = Game.Player.X;
 
@@ -46,8 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-        int childCount = grid.getChildCount();
-        for (int i = 0; i < childCount; i++) {
+        for (int i = 0; i < grid.getChildCount(); i++) {
             ImageView field = (ImageView) grid.getChildAt(i);
             field.setOnClickListener(this);
         }
@@ -62,28 +63,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (game.Move(player, fieldId)) {
             field.setImageResource(player.imgId);
-            Log.d("field", Integer.toString(fieldId));
+
+            if (game.CheckWin(fieldId)) {
+                DeclareWinner("You win!");
+            }
+            else {
+                // Simple random computer player
+                int opponentMoveId = game.getVacant();
+                if (opponentMoveId >= 0) {
+                    game.Move(player.getOpponent(), opponentMoveId);
+                    ImageView opponentField = findViewById(opponentMoveId);
+                    opponentField.setImageResource(player.getOpponent().imgId);
+
+                    if (game.CheckWin(opponentMoveId)) {
+                        DeclareWinner("The computer wins.\nBow to the robot overlords!");
+                    }
+                }
+            }
         }
         else {
             Log.d("field", "This field is already taken");
         }
 
-        if (game.Won(fieldId)) {
-            Log.d("won", "WINNER: HUMAN PLAYER!");
+        if (!game.won && game.getVacant() == -1) {
+            DeclareWinner("It's a draw!");
         }
-        else {
+    }
 
-            // Simple random computer player
-            int opponentMoveId = game.getVacant();
-            if (opponentMoveId >= 0) {
-                game.Move(player.getOpponent(), opponentMoveId);
-                ImageView opponentField = findViewById(opponentMoveId);
-                opponentField.setImageResource(player.getOpponent().imgId);
+    public void DeclareWinner(CharSequence message) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage(message);
+        alertDialogBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                NewGame();
             }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
 
-            if (opponentMoveId >= 0 && game.Won(opponentMoveId)) {
-                Log.d("won", "WINNER: AI PLAYER!");
-            }
-        }
+    public void NewGame() {
+        this.recreate();
     }
 }

@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-public class Game {
+class Game {
     enum Player {
         O (1),
         X (2);
@@ -25,14 +25,17 @@ public class Game {
         }
 
         Player getOpponent() {
-            if (this.id == 1) return Player.X;
-            else return Player.O;
+            if (this.id == 1)
+                return Player.X;
+            else
+                return Player.O;
         }
     }
 
     private int dim;
     private int[][] board;
     private Set<Integer> vacant;
+    boolean won = false;
 
     Game(int dim){
         this.dim = dim;
@@ -40,13 +43,12 @@ public class Game {
         Log.d("board", Integer.toString(this.board[0][0]));
 
         vacant = new HashSet<>();
-
         for (int i = 0; i < Math.pow(dim, 2); i++) {
             vacant.add(i);
         }
     }
 
-    public boolean Move(Player player, int fieldIdx) {
+    boolean Move(Player player, int fieldIdx) {
         int row = fieldIdx / dim;
         int col = fieldIdx % dim;
 
@@ -61,7 +63,7 @@ public class Game {
         return false;
     }
 
-    public int getVacant() {
+    int getVacant() {
         int size = vacant.size();
 
         if (size > 0) {
@@ -79,7 +81,7 @@ public class Game {
         return -1;
     }
 
-    public boolean Won(int fieldIdx) {
+    boolean CheckWin(int fieldIdx) {
         int row = fieldIdx / dim;
         int col = fieldIdx % dim;
         boolean rowWin = true;
@@ -94,6 +96,7 @@ public class Game {
             if (board[i][dim-1-i] != board[row][col]) diagonal2Win = false;
         }
 
-        return rowWin || colWin || diagonal1Win || diagonal2Win;
+        won = rowWin || colWin || diagonal1Win || diagonal2Win;
+        return won;
     }
 }
