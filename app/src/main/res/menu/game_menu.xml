@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/new_game"
+        android:icon="@drawable/ic_new_game_dark"
         android:title="@string/new_game"
         app:showAsAction="ifRoom"/>
     <item android:id="@+id/board_size"

@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import ai.brothersinarms.tic_tac_toe.ScoreBoard.LineState;
+
 class Game {
     enum Player {
         O (1),
@@ -25,7 +27,7 @@ class Game {
         }
 
         Player getOpponent() {
-            if (this.id == 1)
+            if (this == Player.O)
                 return Player.X;
             else
                 return Player.O;
@@ -34,13 +36,15 @@ class Game {
 
     private int dim;
     private int[][] board;
+    private ScoreBoard scoreBoard;
     private Set<Integer> vacant;
     boolean won = false;
+    AI ai = new RandomPlayer(this);
 
     Game(int dim){
         this.dim = dim;
         this.board = new int[dim][dim];
-        Log.d("board", Integer.toString(this.board[0][0]));
+        this.scoreBoard = new ScoreBoard(dim);
 
         vacant = new HashSet<>();
         for (int i = 0; i < Math.pow(dim, 2); i++) {
@@ -55,7 +59,9 @@ class Game {
         if (board[row][col] == 0){
             board[row][col] = player.id;
             vacant.remove(fieldIdx);
-            Log.d("vacant", Integer.toString(vacant.size()));
+
+            LineState lineState = player == Player.X ? LineState.X : LineState.O;
+            won = scoreBoard.Update(fieldIdx, lineState);
 
             return true;
         }

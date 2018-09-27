@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 
+import java.util.Random;
+
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static int dim = 3;
@@ -56,7 +58,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             field.setOnClickListener(this);
         }
 
-//        Log.d("opponent", player.getOpponent().name());
+        Random random = new Random();
+        if (random.nextBoolean()) MoveOpponent();
     }
 
     @Override
@@ -67,29 +70,30 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (game.Move(player, fieldId)) {
             field.setImageResource(player.imgId);
 
-            if (game.CheckWin(fieldId)) {
+            if (game.won) {
                 DeclareWinner(getString(R.string.win_human));
             }
             else {
-                // Simple random computer player
-                int opponentMoveId = game.getVacant();
-                if (opponentMoveId >= 0) {
-                    game.Move(player.getOpponent(), opponentMoveId);
-                    ImageView opponentField = findViewById(opponentMoveId);
-                    opponentField.setImageResource(player.getOpponent().imgId);
-
-                    if (game.CheckWin(opponentMoveId)) {
-                        DeclareWinner(getString(R.string.win_computer));
-                    }
-                }
+                MoveOpponent();
             }
-        }
-        else {
-            Log.d("field", "This field is already taken");
         }
 
         if (!game.won && game.getVacant() == -1) {
             DeclareWinner("It's a draw!");
+        }
+    }
+
+    private void MoveOpponent() {
+        int opponentMoveId = game.ai.GetMove(player.getOpponent());
+
+        if (opponentMoveId >= 0) {
+            game.Move(player.getOpponent(), opponentMoveId);
+            ImageView opponentField = findViewById(opponentMoveId);
+            opponentField.setImageResource(player.getOpponent().imgId);
+
+            if (game.won) {
+                DeclareWinner(getString(R.string.win_computer));
+            }
         }
     }
 
@@ -109,8 +113,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
-//        alertDialog.setCancelable(false);
-//        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
 
