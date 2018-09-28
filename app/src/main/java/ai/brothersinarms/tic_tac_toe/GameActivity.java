@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,10 +23,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
-        if (BuildConfig.DEBUG && (dim < 3 || dim > 5)) {
-            throw new AssertionError("Dimension must be between 3 and 5");
-        }
 
         game = new Game(dim);
 
@@ -143,6 +138,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
             case R.id.board_5x5:
                 dim = 5;
+                NewGame();
+                return true;
+            case R.id.board_10x10:
+                dim = 10;
                 NewGame();
                 return true;
             default:

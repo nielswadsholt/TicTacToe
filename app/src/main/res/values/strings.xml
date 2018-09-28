@@ -8,4 +8,5 @@
     <string name="board_3x3">3 x 3</string>
     <string name="board_4x4">4 x 4</string>
     <string name="board_5x5">5 x 5</string>
+    <string name="board_10x10">10x10</string>
 </resources>
