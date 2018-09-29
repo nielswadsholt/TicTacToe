@@ -16,6 +16,8 @@
                 android:title="@string/board_5x5"/>
             <item android:id="@+id/board_10x10"
                 android:title="@string/board_10x10"/>
+            <item android:id="@+id/board_20x20"
+                android:title="@string/board_20x20"/>
         </menu>
     </item>
 </menu>

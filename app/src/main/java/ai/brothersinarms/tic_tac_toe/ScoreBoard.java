@@ -1,19 +1,22 @@
 package ai.brothersinarms.tic_tac_toe;
 
-import android.util.Log;
+import android.support.annotation.IntDef;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 
 class ScoreBoard {
-    enum LineState { X, O, EMPTY, BLOCKED }
+    static final int X = Game.X;
+    static final int O = Game.O;
+    static final int EMPTY = Game.EMPTY;
+    static final int BLOCKED = 2;
+
+    @IntDef({X, O, EMPTY, BLOCKED})
+    @interface LineState{}
 
     class LineScore {
-        LineState state;
+        @LineState int state;
         int score;
-
-        LineScore() {
-            this.state = LineState.EMPTY;
-        }
     }
 
     private Hashtable<String, LineScore> board;
@@ -31,7 +34,7 @@ class ScoreBoard {
         board.put("D2", new LineScore());
     }
 
-    boolean Update(int fieldIdx, LineState state) {
+    boolean Update(int fieldIdx, int state) {
         boolean won = false;
 
         int row = fieldIdx / dim;
@@ -46,8 +49,7 @@ class ScoreBoard {
 
         for (String key : lineKeys) {
             LineScore lineScore = board.get(key);
-            Log.d("scoreboard", lineScore.state.name() + ": " + lineScore.score);
-            if (lineScore.state == LineState.EMPTY) {
+            if (lineScore.state == EMPTY) {
                 lineScore.state = state;
                 lineScore.score++;
             }
@@ -55,7 +57,7 @@ class ScoreBoard {
                 lineScore.score++;
             }
             else {
-                lineScore.state = LineState.BLOCKED;
+                lineScore.state = BLOCKED;
             }
 
             if (lineScore.score >= dim) { won = true; }

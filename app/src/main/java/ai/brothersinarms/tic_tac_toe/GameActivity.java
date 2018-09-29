@@ -11,13 +11,15 @@ import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 
+import java.util.Hashtable;
 import java.util.Random;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static int dim = 3;
+    private static Hashtable<Integer, Integer> boardImages = new Hashtable<>();
     private Game game;
-    private Game.Player player = Game.Player.X;
+    private static int dim = 3;
+    @Game.FieldValue private int player = Game.X;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_game);
 
         game = new Game(dim);
+
+        boardImages.put(Game.EMPTY, R.drawable.ttt_blank);
+        boardImages.put(Game.X, R.drawable.ttt_x);
+        boardImages.put(Game.O, R.drawable.ttt_o);
 
         GridLayout grid = findViewById(R.id.board);
         grid.setOnClickListener(this);
@@ -42,7 +48,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 field.setLayoutParams(params);
 
                 field.setScaleType(ImageView.ScaleType.FIT_XY);
-                field.setImageResource(R.drawable.ttt_blank);
+                field.setImageResource(boardImages.get(Game.EMPTY));
                 field.setId(row * dim + col);
                 grid.addView(field);
             }
@@ -60,10 +66,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         ImageView field = (ImageView) v;
-        int fieldId = field.getId();
+        int fieldIdx = field.getId();
 
-        if (game.Move(player, fieldId)) {
-            field.setImageResource(player.imgId);
+        if (game.Move(fieldIdx, player)) {
+            field.setImageResource(boardImages.get(player));
 
             if (game.won) {
                 DeclareWinner(getString(R.string.win_human));
@@ -79,12 +85,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void MoveOpponent() {
-        int opponentMoveId = game.ai.GetMove(player.getOpponent());
+        @Game.FieldValue int opponent = player * -1;
+        int opponentMove = game.GetMove(opponent);
 
-        if (opponentMoveId >= 0) {
-            game.Move(player.getOpponent(), opponentMoveId);
-            ImageView opponentField = findViewById(opponentMoveId);
-            opponentField.setImageResource(player.getOpponent().imgId);
+        if (opponentMove >= 0) {
+            game.Move(opponentMove, opponent);
+            ImageView opponentField = findViewById(opponentMove);
+            opponentField.setImageResource(boardImages.get(opponent));
 
             if (game.won) {
                 DeclareWinner(getString(R.string.win_computer));
@@ -142,6 +149,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
             case R.id.board_10x10:
                 dim = 10;
+                NewGame();
+                return true;
+            case R.id.board_20x20:
+                dim = 20;
                 NewGame();
                 return true;
             default:

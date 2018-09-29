@@ -5,5 +5,5 @@ abstract class AI {
 
     AI(Game game) { this.game = game; }
 
-    abstract int GetMove(Game.Player player);
+    abstract int GetMove(int player);
 }
