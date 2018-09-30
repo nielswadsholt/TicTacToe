@@ -72,34 +72,34 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             field.setImageResource(boardImages.get(player));
 
             if (game.won) {
-                DeclareWinner(getString(R.string.win_human));
+                DeclareResult(getString(R.string.win_human));
             }
             else {
                 MoveOpponent();
             }
         }
 
-        if (!game.won && game.getVacant() == -1) {
-            DeclareWinner("It's a draw!");
+        if (!game.won && game.IsFull()) {
+            DeclareResult("It's a draw!");
         }
     }
 
     private void MoveOpponent() {
         @Game.FieldValue int opponent = player * -1;
-        int opponentMove = game.GetMove(opponent);
+        int moveIdx = game.GetMove(opponent);
 
-        if (opponentMove >= 0) {
-            game.Move(opponentMove, opponent);
-            ImageView opponentField = findViewById(opponentMove);
+        if (moveIdx >= 0) {
+            game.Move(moveIdx, opponent);
+            ImageView opponentField = findViewById(moveIdx);
             opponentField.setImageResource(boardImages.get(opponent));
 
             if (game.won) {
-                DeclareWinner(getString(R.string.win_computer));
+                DeclareResult(getString(R.string.win_computer));
             }
         }
     }
 
-    public void DeclareWinner(CharSequence message) {
+    public void DeclareResult(CharSequence message) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage(message);
         alertDialogBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
@@ -151,8 +151,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 dim = 10;
                 NewGame();
                 return true;
-            case R.id.board_20x20:
-                dim = 20;
+            case R.id.board_15x15:
+                dim = 15;
                 NewGame();
                 return true;
             default:

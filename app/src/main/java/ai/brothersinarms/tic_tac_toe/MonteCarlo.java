@@ -6,6 +6,6 @@ class MonteCarlo extends AI {
     // TODO: Implement MonteCarlo
     @Override
     public int GetMove(int player) {
-        return game.getVacant();
+        return game.GetRandomEmpty();
     }
 }
