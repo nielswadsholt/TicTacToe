@@ -17,8 +17,9 @@ import java.util.Random;
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static Hashtable<Integer, Integer> boardImages = new Hashtable<>();
-    private Game game;
     private static int dim = 3;
+    private static Game game = new Game(dim);
+    private static AI ai = new MinMax(game);
     @Game.FieldValue private int player = Game.X;
 
     @Override
@@ -27,6 +28,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_game);
 
         game = new Game(dim);
+        game.SwitchAI(ai);
 
         boardImages.put(Game.EMPTY, R.drawable.ttt_blank);
         boardImages.put(Game.X, R.drawable.ttt_x);
@@ -153,6 +155,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
             case R.id.board_15x15:
                 dim = 15;
+                NewGame();
+                return true;
+            case R.id.random:
+                ai = new RandomPlayer(game);
+                NewGame();
+                return true;
+            case R.id.minmax:
+                ai = new MinMax(game);
                 NewGame();
                 return true;
             default:

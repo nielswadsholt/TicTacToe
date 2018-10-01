@@ -20,4 +20,13 @@
                 android:title="@string/board_15x15"/>
         </menu>
     </item>
+    <item android:id="@+id/ai"
+        android:title="@string/ai">
+        <menu>
+            <item android:id="@+id/random"
+                android:title="@string/random"/>
+            <item android:id="@+id/minmax"
+                android:title="@string/minmax"/>
+        </menu>
+    </item>
 </menu>

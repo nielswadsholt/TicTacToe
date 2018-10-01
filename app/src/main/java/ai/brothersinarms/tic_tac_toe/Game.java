@@ -21,7 +21,7 @@ class Game {
     private ScoreBoard scoreBoard;
     private Set<Integer> vacant;
     boolean won = false;
-    private AI ai = new RandomPlayer(this);
+    private AI ai = new MinMax(this);
 
     Game(int dim){
         this.dim = dim;
@@ -34,15 +34,15 @@ class Game {
         }
     }
 
-    boolean Move(int fieldIdx, @FieldValue int fieldValue) {
+    boolean Move(int fieldIdx, @FieldValue int player) {
         int row = fieldIdx / dim;
         int col = fieldIdx % dim;
 
         if (board[row][col] == 0){
-            board[row][col] = fieldValue;
+            board[row][col] = player;
             vacant.remove(fieldIdx);
-            won = scoreBoard.Update(fieldIdx, fieldValue);
-//            Log.d("field", "idx: " + fieldIdx + " val: " + fieldValue);
+            won = scoreBoard.Update(fieldIdx, player);
+            Log.d("field", "idx: " + fieldIdx + " val: " + player);
             Log.d("field", "score: " + scoreBoard.GetScore());
 
             return true;
@@ -50,6 +50,8 @@ class Game {
 
         return false;
     }
+
+    int GetDim() { return dim; }
 
     int GetRandomEmpty() {
         int rnd = new Random().nextInt(dim * dim);
@@ -69,5 +71,16 @@ class Game {
 
     boolean IsFull() {
         return vacant.isEmpty();
+    }
+
+    ScoreBoard GetScoreBoardClone() {
+        return  scoreBoard.Clone();
+    }
+
+    Set<Integer> GetVacantClone() { return new TreeSet<>(vacant); }
+
+    void SwitchAI(AI ai) {
+        ai.game = this;
+        this.ai = ai;
     }
 }
