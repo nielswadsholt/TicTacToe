@@ -6,7 +6,7 @@ import java.util.TreeSet;
 class MinMax extends AI {
 
     private int maxDepth = 3;
-    private Set<Integer> vacant;
+    private Set<Integer> vacant = new TreeSet<>();
     private Set<Integer> visited = new TreeSet<>();
     private ScoreBoard scoreBoard;
 
@@ -14,17 +14,17 @@ class MinMax extends AI {
     {
         super(game);
 
-        if (game.GetDim() > 10) {
+        if (game.getBoard().getDim() > 10) {
             maxDepth = 1;
         }
-        else if (game.GetDim() > 3) {
+        else if (game.getBoard().getDim() > 3) {
             maxDepth = 2;
         }
     }
 
     @Override
     int GetMove(int player) {
-        vacant = game.GetVacantClone();
+        vacant = game.getBoard().getVacantClone();
         scoreBoard = game.GetScoreBoardClone();
 
         int[] result = MM(maxDepth, player);

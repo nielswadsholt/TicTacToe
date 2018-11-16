@@ -19,7 +19,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private static Hashtable<Integer, Integer> boardImages = new Hashtable<>();
     private static int dim = 3;
     private static Game game = new Game(dim);
-    private static AI ai = new MinMax(game);
+    private static AI ai = new RandomPlayer(game);
     @Game.FieldValue private int player = Game.X;
 
     @Override
@@ -81,7 +81,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-        if (!game.won && game.IsFull()) {
+        if (!game.won && game.getBoard().isFull()) {
             DeclareResult("It's a draw!");
         }
     }

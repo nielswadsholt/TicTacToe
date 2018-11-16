@@ -8,6 +8,6 @@ class RandomPlayer extends AI {
 
     @Override
     public int GetMove(int player) {
-        return game.GetRandomEmpty();
+        return game.getBoard().getRandomEmpty();
     }
 }

@@ -15,7 +15,7 @@ class ScoreBoard {
     @IntDef({X, O, EMPTY, BLOCKED})
     @interface LineState{}
 
-    class LineStatus {
+    private class LineStatus {
         @LineState int state;
         int count;
     }
@@ -28,11 +28,12 @@ class ScoreBoard {
         lines = new Hashtable<>();
 
         for (int i = 0; i < this.dim; i++) {
-            lines.put("R" + i, new LineStatus());
-            lines.put("C" + i, new LineStatus());
+            lines.put("R" + i, new LineStatus()); // rows
+            lines.put("C" + i, new LineStatus()); // columns
         }
-        lines.put("D1", new LineStatus());
-        lines.put("D2", new LineStatus());
+
+        lines.put("D1", new LineStatus()); // diagonal 1
+        lines.put("D2", new LineStatus()); // diagonal 2
     }
 
     boolean Update(int fieldIdx, int player) {
@@ -42,8 +43,8 @@ class ScoreBoard {
         int col = fieldIdx % dim;
 
         ArrayList<String> lineKeys = new ArrayList<>();
-        lineKeys.add("R" + row);
-        lineKeys.add("C" + col);
+        lineKeys.add("R" + row); // mark row line
+        lineKeys.add("C" + col); // add col line
 
         if (row == col) { lineKeys.add("D1"); }
         if (row + col + 1 == dim) { lineKeys.add("D2"); }
